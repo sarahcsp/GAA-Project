@@ -1,0 +1,145 @@
+---
+title: GeoXplorer Application Practice Research Paper
+author:
+  - name: AVULA Niharika
+    email: niharikaa.2020@msc.smu.edu.sg
+    affiliation: Singapore Management University
+  - name: CHIN Shan Pei Sarah
+    email: sarah.chin.2019@scis.smu.edu.sg
+    affiliation: Singapore Management University
+  - name: GOH Ting Chuan Jerome
+    email: jerome.goh.2019@scis.smu.edu.sg
+    affiliation: Singapore Management University
+abstract: |
+  — The latest technological advancements and rapid cost reduction of location-based data collection technologies such as Unmanned Aerial Vehicles (UAV), remote sensing and the increasing use of GPS-enabled smartphones and devices has provided us with a huge and continuously increasing amount of data about movement of vehicles, people and goods in an urban area.This explosive growth of geospatially-referenced data has far outpaced the planner’s ability to utilize and transform the data into insightful information thus creating an adverse impact on the return on the investment made to collect and manage this data. Addressing this pressing need, we designed and developed DIVAD, a dynamic and interactive visual analytics dashboard to allow city planners to explore and analyze city’s transportation data to gain valuable insights about city’s traffic flow and transportation requirements. We demonstrate the potential of DIVAD through the use of interactive choropleth and hexagon binning maps to explore and analyze large taxi-transportation data of Singapore for different geographic and time zones. 
+  
+bibliography: sigproc.bib
+csl: acm-sig-proceedings.csl
+output: rticles::acm_article
+---
+
+# Motivation of Project 
+An important step in data science is to explore and investigate data before proceeding with any modeling, which helps to identify patterns and summarise the main characteristics of the data. The conventional Exploratory Data Analysis (EDA) investigates the relationship between data variables and how they affect each other. In contrast, Exploratory Spatial Data Analysis (ESDA) is nothing but an extension of EDA exploring how a variable correlates to a geographic location. 
+
+It is an important Geographic Information Science (GIS)-based technique that allows users to go beyond mapping to describe and visualise spatial distributions, identify spatial outliers and discover spatial patterns such as clusters or hot spots. This allows users to translate geospatial data into insights by examining the data with a quantitative lens to gain deeper understanding before proceeding on with the modeling.
+
+The most common exploratory areas of the spatial data are as follows: 
+
+- Distribution analysis 
+
+- Outliers and Cluster analysis 
+
+- Hot spot and Cold spot Areas analysis
+
+With the latest technological advancements in Unmanned Aerial Vehicles (UAV), remote sensing and the increasing use of GPS-enabled smartphones and devices, the demand for location-based analytics is increasing in every industry with many organisations and multidisciplinary researchers relying on Geospatial Analytics for making decisions and deriving solutions. Therefore, there is a significant demand for free and open-source spatial analysis research infrastructure to enable more users (researchers, students, industry practitioners, non-GIS users) to adopt geospatial analytics and find the value in “where”. 
+
+GeoDa is one such software program built by Professor Luc Anselin and his team which allows users to perform an end-to-end spatial analysis exercise from data transformation, mapping and geovisualisation to ESDA, spatial autocorrelation analysis and finally spatial regression analysis. Therefore, with the objective of building a web-enabled geospatial tool using R statistics tool and packages, our project aims to use GeoDa as reference and translate it into a web-based R shiny application that is easily accessible and user-friendly for all.
+
+# Review and Critic of past work
+For past work, we will refer to GeoDa and the Australian Urban Research Infrastructure Network (AURIN). 
+
+## GeoDa
+GeoDa is a software program intended to serve as a user-friendly and graphical introduction to spatial analysis for non-geographic information systems (GIS) specialists. The features of GeoDa includes simple mapping to exploratory data analysis, visualising global and local spatial autocorrelation and spatial regression. The key feature of GeoDa is the interactive environment that combines maps with statistical graphics, using the technology of dynamically linked windows. 
+
+Despite the many features that GeoDa has offered, the program does have some limitation. GeoDa does not handle missing values; it will fill blank fields with zeros or treat numerical values. The only options that users can do is either excluding the missing observations, resaving the shape file for only areas without missing values or interpolating missing values. 
+
+GeoDa is also completely driven by a point and click interface and does not require any programming. However, it is not yet customisable or extensible by the user. If the users required more customisable features in their graphical representations, they would have to use R, which requires them to be able to code it out. 
+
+## AURIN
+The Australian Urban Research Infrastructure Network (AURIN) is a database provider that was set up by the Australian government. Their purpose is to provide urban researchers, designers, planners and community stakeholders with data and tools to help them understand patterns of urban phenomena and navigate urban growth towards a sustainable future. AURIN has 3 main tools - Portal, APIs and Map. The Portal contains a rich range of data and over 100 analytical and visualisation tools that provides extensive scope for spatialising, integrating, manipulating and mapping diverse data. The AURIN API allows users to access a whole range of open datasets without having to login to the portal. Users can access via QGIS, mobile apps and other programming environments such as R and Jupyter. The Map function allows users to cover subjects such as population and demographic, health and wellbeing and many more. 
+
+However, AURIN is only available in Australia with its datasets specifically catered to Australia. Therefore, it would be difficult for foreigners or even locals who want to study factors outside of Australia to use its tools. Additionally, AURIN has a fixed dataset to allow users to experiment with. This makes it less flexible for users who have their own dataset and wants their data to be cleaned and analysed. 
+
+# Design Framework
+The design of GeoXplorer is meant to allow users to have a better experience while using the application. It is designed to flow smoothly end-to-end and be intuitive for users when performing their exploratory analysis of the data. On every tab, it provides a simple view with two sections for data input and output. Various forms of basic and reactive Shiny inputs are used to support user interactions with the application and the data output is mainly in the form of plots and text for easy consumption of analysis results.
+
+In total, GeoXplorer has five different tabs - Home, Data, Cluster Analysis, Hot & Cold Spots and Spatial Autocorrelation. However, the main focus will be on the Data, Hot & Cold Spots and Spatial Autocorrelation tabs. 
+
+## Data 
+
+The aim of the Data tab is to allow users to be able to upload their own datasets for GeoXplorer to analyse and provide the necessary insights. This tab has three other sub-sections: Aspatial, Geospatial and Joined Data. Users will be first prompted to insert the Aspatial data in _csv_ format. After uploading the aspatial data, users can expect to see the uploaded data *[Figure 1]* in the form of a table for easy validation of data upload. In the Geospatial sub-section, users are expected to input five different kinds of files (.shx, .shp, ...). This would allow GeoXplorer to generate a basic map representing the dataset to allow users to have a preview of the map *[Figure 2]*. Lastly, in the Joined Data sub-section, users will be prompted to select the aspatial and geospatial data columns to perform the relational join after which GeoXplorer automatically joins the datasets and print out the various attributes of the joined data. While users are expected to ensure their datasets are pre-cleaned, GeoXplorer is also able to handle generic data wrangling steps back-end such as handling missing values (i.e NA) and invalid geometries. Therefore, the Data tab is designed to guide the user in the three step process to complete the entire data input process hassle free before moving on to the various analysis tabs.
+
+```{r, echo = FALSE, fig.align = 'center', out.width = '100%', fig.cap=paste("Uploaded Aspatial Data")} 
+#knitr::include_graphics("aspatial data.jpg") 
+```
+
+```{r, echo = FALSE, fig.align = 'center', out.width = '100%', fig.cap=paste("Uploaded Geospatial Data")} 
+#knitr::include_graphics("geospatial data.jpg") 
+```
+
+## Cluster & Outlier Analysis
+Local Indicator of Spatial Autocorrelation (LISA) Statistics tools are provided in this tab to allow users to identify clusters and outliers in their data. On this tab, users are required to choose the order and analysis variables to perform their analysis. In addition, they are also provided further options to select the contiguity weights matrix as well as the significance level to evaluate the local Moran. With these reactive inputs from user, GeoXplorer will output four plots: Local Moran's I values, P values, distribution plot of selected variable for analysis and finally LISA Cluster map which will allow user to identify the clusters. Furthermore, GeoXplorer also has built-in function to handle cases where user selects a categorical variable for analysis and prompts them to re-select the correct variable for analysis. Therefore, the Cluster & Outlier Analysis tab is effective if user wants to compare the analysis results with various input parameters and have reactive output plots. 
+
+## Hot & Cold Spot Analysis
+
+Getis and Ord’s G-statistics statistic method is provided in this tab to identify hot and cold spots by looking at neighbours within a defined proximity to identify where there are either high or low values of clusters spatially. Hot spots are areas where there is a higher concentration of events as compared to the expected number given a random distribution of events. Therefore, users are required to choose the order and analysis variables to perform their analysis as well as select the appropriate type of distance weight matrix to be used in the analysis. I cases, where user selects fixed distance weight matrix, GeoXplorer uses the upper limit of distance band to ensure all features will have at least one neighbor. Similarly, GeoXplorer will also handle cases where user selects a categorical variable for analysis and prompts them to re-select the correct variable type for analysis.
+
+## Spatial Autocorrelation
+
+Spatial Autocorrelation is the presence of systematic spatial variation in a variable. If the spatial autocorrelation is positive, the tendency for areas or sites that are close together have similar values. GeoXplorer will allow users to choose between two different types of Global Spatial Autocorrelation statistics methods; Moran's I and Geary's C. Users will also be able to choose between Queen and Rook contiguity weights. The rook criterion will define the neighbours by the existence of a common edge between two spatial units whereas the queen criterion encompasses and defines the neighbours as spatial units sharing a common edge or vertex. GeoXplorer will also allow users to choose the number of simulations. 
+
+<Insert image of the page with the 2 options>
+
+After the user has chosen their preferred method of analysis, GeoXplorer will print out either Moran's I or Geary's C results with their respective Monte Carlo counterpart. 
+
+<Insert image of the results for either Moran or Geary>
+
+Aside from the results of the Spatial Autocorrelation diagrams, GeoXplorer will also print out the respective Spatial Correlogram. The diagrams are great to examine patterns of spatial autocorrelation in the datasets provided. They show how correlated the pairs of spatial observations are when the distance between the observations increase. 
+
+<Insert image of the correlogram>
+
+# Demonstration
+With the design and development of the GeoXplorer application completed, the next key step was testing the application to identify bugs, areas of improvement and also to demonstrate the useability of the application on any dataset. Therefore, the Hunan dataset provided in Hand-on Exercise 7 was used for the initial testing during the development phase. This dataset consists of a csv file with selected Hunan's local development indicators in 2012 and the geospatial data consists of Hunan province administrative boundary layer at county level, allowing both datasets to be joined by county. The figures below show that GeoXplorer is able to recreate the same results as obtained in Hands-on Exercise 7.
+
+<Insert images>
+
+Similarly, to further evaluate the useability and flexibility of GeoXplorer, another usecase on the overall 2019 electricity consumption in Singapore was used. This dataset consists of a csv file with overall 2019 electricity consumption for public housing in the different planning areas in Singapore and the geospatial data consists of URA 2014 Master Plan Planning Subzone boundary data, allowing both datasets to be joined by planning. The figures below show the end-to-end analysis results and one key bug identified was for joining data. the left_join() function in R is case sensitive and will only be able to join both datasets if the common column have the same character cases (i.e lower or upper).Therefore, while this is handled by pre-cleaning the data before importing in GeoXplorer, it can be one area of improvement for future work.
+
+<Insert images>
+
+# Discussion
+
+
+
+# Future Work
+Due to the short project runway for building the application, the objective was to develop a minimum viable product with main focus on the functionality of the application while ensuring the user interface meets the minimum standards of such applications. Therefore, there is more scope for future work to improve in the following areas
+
+* Improve the user interface
+* Provide additional functionalities for users to choose the aesthetics of the output (i.e plot size, colours etc)
+* Expand the applications capabilities in handling advanced data wrangling in the backend
+* Expand the data input capabilities of the application to other types such as GeoJson, KML, Excel  
+
+In conclusion, GeoXplorer meets the initial requirements proposed and is capable of catering to different datasets. While GeoDa ia good comprehensive tool when it comes to exploratory spatial data analytics, the unique selling point of our application GeoXplorer is that it is a free web-based and does not require user to download any software packages etc, making it an efficient tool particularly for students.
+
+# References
+
+---
+references:
+- id: meier2012
+  title: Professional Android 4 Application Development
+  author: 
+  - family: Meier
+    given: Reto
+  type: book
+  publisher: John Wiley & Sons, Inc.
+  issued:
+    year: 2012
+    month: 5
+- id: fenner2012a
+  title: One-click science marketing
+  author:
+  - family: Fenner
+    given: Martin
+  container-title: Nature Materials
+  volume: 11
+  URL: 'https://doi.org/10.1038/nmat3283'
+  DOI: 10.1038/nmat3283
+  issue: 4
+  publisher: Nature Publishing Group
+  page: 261-263
+  type: article-journal
+  issued:
+    year: 2012
+    month: 3
+...
+
